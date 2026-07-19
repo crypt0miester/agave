@@ -319,7 +319,7 @@ quinn = "0.11.11"
 rand = "0.9.4"
 rand_chacha = "0.9.0"
 rayon = "1.12.0"
-reed-solomon-erasure = "6.0.0"
+reed-solomon-erasure = { package = "tape-reed-solomon", git = "https://github.com/spool-labs/reed-solomon", rev = "996a825f3800cff2516bf3547f86f6ca279594e0" }
 regex = "1.13.0"
 reqwest = { version = "0.12.28", default-features = false }
 reqwest-middleware = "0.4.2"

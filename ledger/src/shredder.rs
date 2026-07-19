@@ -4,7 +4,7 @@ use {
     },
     lazy_lru::LruCache,
     rayon::ThreadPool,
-    reed_solomon_erasure::{Error::TooFewDataShards, galois_8::ReedSolomon},
+    reed_solomon_erasure::{Error::TooFewDataShards, ReedSolomon},
     solana_clock::Slot,
     solana_entry::{block_component::BlockComponent, entry::Entry},
     solana_hash::Hash,
