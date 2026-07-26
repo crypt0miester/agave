@@ -9,7 +9,8 @@ use {
     solana_ledger::{
         genesis_utils::create_genesis_config,
         shred::{
-            ProcessShredsStats, ReedSolomonCache, Shred, Shredder, filter::ShredRecoveryContext,
+            DATA_SHREDS_PER_FEC_BLOCK, ProcessShredsStats, ReedSolomonCache, Shred, Shredder,
+            filter::ShredRecoveryContext,
         },
     },
     solana_packet::PACKET_DATA_SIZE,
@@ -23,7 +24,12 @@ use {
 fn new_shred_recovery_context(shreds: &[Shred]) -> ShredRecoveryContext {
     let mut genesis_config = create_genesis_config(1).genesis_config;
     let shred_slot = shreds.first().map(Shred::slot).unwrap_or_default();
-    let slots_per_epoch = shred_slot.max(MINIMUM_SLOTS_PER_EPOCH);
+    // `max_shred_slot` allows shreds up to `slots_per_epoch / 2` past the root
+    // (root is 0 here), so the epoch must be at least twice the shred slot or
+    // every shred is dropped as `slot_out_of_range` before recovery runs.
+    let slots_per_epoch = shred_slot
+        .saturating_mul(2)
+        .max(MINIMUM_SLOTS_PER_EPOCH);
     genesis_config.epoch_schedule = EpochSchedule::custom(slots_per_epoch, slots_per_epoch, false);
     let root_bank = Arc::new(Bank::new_for_tests(&genesis_config));
     let (dummy_retransmit_sender, _) = EvictingSender::new_bounded(0);
@@ -70,8 +76,8 @@ fn make_dummy_entries<R: Rng>(rng: &mut R, data_size: usize) -> Vec<Entry> {
         .collect()
 }
 
-fn make_shreds_from_entries<R: Rng>(
-    rng: &mut R,
+#[allow(clippy::too_many_arguments)]
+fn make_shreds_from_entries(
     shredder: &Shredder,
     keypair: &Keypair,
     entries: &[Entry],
@@ -79,18 +85,32 @@ fn make_shreds_from_entries<R: Rng>(
     chained_merkle_root: Hash,
     reed_solomon_cache: &ReedSolomonCache,
     stats: &mut ProcessShredsStats,
+    next_shred_index: u32,
+    next_code_index: u32,
 ) -> (Vec<Shred>, Vec<Shred>) {
     let (data, code) = shredder.entries_to_merkle_shreds_for_tests(
         keypair,
         entries,
         is_last_in_slot,
         chained_merkle_root,
-        rng.random_range(0..2_000), // next_shred_index
-        rng.random_range(0..2_000), // next_code_index
+        next_shred_index,
+        next_code_index,
         reed_solomon_cache,
         stats,
     );
     (black_box(data), black_box(code))
+}
+
+/// Shred/code index for an erasure batch that passes shred-ingest filtering:
+/// `fec_set_index` must be a multiple of `DATA_SHREDS_PER_FEC_BLOCK`, and both
+/// data and coding indices must fall inside that batch.
+fn aligned_fec_set_index<R: Rng>(rng: &mut R) -> u32 {
+    rng.random_range(0..64) * DATA_SHREDS_PER_FEC_BLOCK as u32
+}
+
+/// Unaligned index, as the encode benches have always used.
+fn rng_index<R: Rng>(rng: &mut R) -> u32 {
+    rng.random_range(0..2_000)
 }
 
 fn run_make_shreds_from_entries(
@@ -118,7 +138,6 @@ fn run_make_shreds_from_entries(
     // Initialize the thread-pool and warm the Reed-Solomon cache.
     for _ in 0..10 {
         make_shreds_from_entries(
-            &mut rng,
             &shredder,
             &keypair,
             &entries,
@@ -126,12 +145,13 @@ fn run_make_shreds_from_entries(
             chained_merkle_root,
             &reed_solomon_cache,
             &mut stats,
+            rng_index(&mut rng),
+            rng_index(&mut rng),
         );
     }
     c.bench_function(name, |b| {
         b.iter(|| {
             let (data, code) = make_shreds_from_entries(
-                &mut rng,
                 &shredder,
                 &keypair,
                 &entries,
@@ -139,6 +159,8 @@ fn run_make_shreds_from_entries(
                 chained_merkle_root,
                 &reed_solomon_cache,
                 &mut stats,
+                rng_index(&mut rng),
+                rng_index(&mut rng),
             );
             black_box(data);
             black_box(code);
@@ -169,8 +191,11 @@ fn run_recover_shreds(
     let chained_merkle_root = make_dummy_hash(&mut rng);
     let reed_solomon_cache = ReedSolomonCache::default();
     let mut stats = ProcessShredsStats::default();
+    // Data and coding indices must both start at the same fec-set-aligned
+    // index, otherwise shred-ingest filtering (`check_fixed_fec_set`) drops
+    // every shred and recovery is handed an empty batch.
+    let fec_index = aligned_fec_set_index(&mut rng);
     let (data, code) = make_shreds_from_entries(
-        &mut rng,
         &shredder,
         &keypair,
         &entries,
@@ -178,6 +203,8 @@ fn run_recover_shreds(
         chained_merkle_root,
         &reed_solomon_cache,
         &mut stats,
+        fec_index,
+        fec_index,
     );
     let fec_set_index = data[0].fec_set_index();
     let mut data: Vec<_> = data
