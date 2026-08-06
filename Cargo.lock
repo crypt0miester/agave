@@ -9118,6 +9118,7 @@ dependencies = [
  "static_assertions",
  "strum",
  "tape-reed-solomon",
+ "tape-sha256",
  "tar",
  "tempfile",
  "test-case",
@@ -12243,6 +12244,12 @@ name = "tape-reed-solomon"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8d60ec175b7c0ef10297410f621b88006ce9e327b18fd85a12982839e6c294b"
+
+[[package]]
+name = "tape-sha256"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ecfcb393a3304db7c48a8ce2f3a51aa9188ce00ae6bb2c9e03dcd0f3fc3d6da9"
 
 [[package]]
 name = "tar"
