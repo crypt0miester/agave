@@ -1271,14 +1271,15 @@ fn finish_erasure_batch(
     let num_data_shreds = usize::from(num_data_shreds);
     let num_coding_shreds = usize::from(num_coding_shreds);
     let erasure_batch_size = num_data_shreds + num_coding_shreds;
-    reed_solomon_cache
-        .get(num_data_shreds, num_coding_shreds)?
-        .encode(
-            shreds
-                .iter_mut()
-                .map(Shred::erasure_shard_mut)
-                .collect::<Result<Vec<_>, _>>()?,
-        )?;
+    {
+        let mut shards = shreds
+            .iter_mut()
+            .map(Shred::erasure_shard_mut)
+            .collect::<Result<Vec<_>, _>>()?;
+        reed_solomon_cache
+            .get(num_data_shreds, num_coding_shreds)?
+            .encode(&mut shards)?;
+    }
     // Set the chained_merkle_root for each shred.
     for shred in shreds.iter_mut() {
         shred.set_chained_merkle_root(&chained_merkle_root)?;
