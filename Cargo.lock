@@ -140,7 +140,7 @@ dependencies = [
 name = "agave-feature-set"
 version = "4.3.0-alpha.3"
 dependencies = [
- "ahash 0.8.12",
+ "ahash",
  "solana-epoch-schedule",
  "solana-frozen-abi",
  "solana-frozen-abi-macro",
@@ -304,7 +304,7 @@ dependencies = [
  "agave-feature-set",
  "agave-scheduler-bindings",
  "agave-transaction-view",
- "ahash 0.8.12",
+ "ahash",
  "libc",
  "nix",
  "rts-alloc",
@@ -623,17 +623,6 @@ dependencies = [
 
 [[package]]
 name = "ahash"
-version = "0.7.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "891477e0c6a8957309ee5c45a6368af3ae14bb510732d2684ffa19af310920f9"
-dependencies = [
- "getrandom 0.2.15",
- "once_cell",
- "version_check",
-]
-
-[[package]]
-name = "ahash"
 version = "0.8.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75"
@@ -856,7 +845,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43d68f2d516162846c1238e755a7c4d131b892b70cc70c471a8e3ca3ed818fce"
 dependencies = [
- "ahash 0.8.12",
+ "ahash",
  "ark-ff 0.5.0",
  "ark-poly 0.5.0",
  "ark-serialize 0.5.0",
@@ -976,7 +965,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "579305839da207f02b89cd1679e50e67b4331e2f9294a57693e5051b7703fe27"
 dependencies = [
- "ahash 0.8.12",
+ "ahash",
  "ark-ff 0.5.0",
  "ark-serialize 0.5.0",
  "ark-std 0.5.0",
@@ -3440,9 +3429,6 @@ name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a9ee70c43aaf417c914396645a0fa852624801b24ebb7ae78fe8272889ac888"
-dependencies = [
- "ahash 0.7.8",
-]
 
 [[package]]
 name = "hashbrown"
@@ -3450,7 +3436,7 @@ version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43a3c133739dddd0d2990f9a4bdf8eb4b21ef50e4851ca85ab661199821d510e"
 dependencies = [
- "ahash 0.8.12",
+ "ahash",
 ]
 
 [[package]]
@@ -3459,7 +3445,7 @@ version = "0.14.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
 dependencies = [
- "ahash 0.8.12",
+ "ahash",
  "allocator-api2",
 ]
 
@@ -4584,15 +4570,6 @@ name = "log"
 version = "0.4.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad"
-
-[[package]]
-name = "lru"
-version = "0.7.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e999beba7b6e8345721bd280141ed958096a2e4abdf74f67ff4ce49b4b54e47a"
-dependencies = [
- "hashbrown 0.12.3",
-]
 
 [[package]]
 name = "lru"
@@ -6055,21 +6032,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "reed-solomon-erasure"
-version = "6.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7263373d500d4d4f505d43a2a662d475a894aa94503a1ee28e9188b5f3960d4f"
-dependencies = [
- "cc",
- "libc",
- "libm",
- "lru 0.7.8",
- "parking_lot 0.11.2",
- "smallvec",
- "spin",
-]
-
-[[package]]
 name = "regex"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7124,7 +7086,7 @@ dependencies = [
  "agave-fs",
  "agave-logger",
  "agave-reserved-account-keys",
- "ahash 0.8.12",
+ "ahash",
  "assert_matches",
  "bincode",
  "blake3",
@@ -7530,7 +7492,7 @@ dependencies = [
 name = "solana-bucket-map"
 version = "4.3.0-alpha.3"
 dependencies = [
- "ahash 0.8.12",
+ "ahash",
  "bv",
  "bytemuck",
  "bytemuck_derive",
@@ -7568,7 +7530,7 @@ name = "solana-builtins-default-costs"
 version = "4.3.0-alpha.3"
 dependencies = [
  "agave-feature-set",
- "ahash 0.8.12",
+ "ahash",
  "qualifier_attr",
  "solana-pubkey 4.3.0",
  "solana-sdk-ids",
@@ -8049,7 +8011,7 @@ dependencies = [
  "agave-votor-messages",
  "agave-votor-transport",
  "agave-xdp",
- "ahash 0.8.12",
+ "ahash",
  "anyhow",
  "arc-swap",
  "arrayvec",
@@ -8193,7 +8155,7 @@ dependencies = [
  "agave-feature-set",
  "agave-logger",
  "agave-reserved-account-keys",
- "ahash 0.8.12",
+ "ahash",
  "itertools 0.14.0",
  "log",
  "solana-bincode",
@@ -9085,7 +9047,7 @@ dependencies = [
  "itertools 0.14.0",
  "lazy-lru",
  "log",
- "lru 0.18.1",
+ "lru",
  "mockall",
  "num_cpus",
  "num_enum",
@@ -9096,7 +9058,6 @@ dependencies = [
  "rand 0.9.4",
  "rand_chacha 0.9.0",
  "rayon",
- "reed-solomon-erasure",
  "rocksdb",
  "scopeguard",
  "serde",
@@ -9156,6 +9117,8 @@ dependencies = [
  "spl-generic-token",
  "static_assertions",
  "strum",
+ "tape-reed-solomon",
+ "tape-sha256",
  "tar",
  "tempfile",
  "test-case",
@@ -9488,7 +9451,7 @@ dependencies = [
  "agave-logger",
  "agave-random",
  "agave-transaction-view",
- "ahash 0.8.12",
+ "ahash",
  "arc-swap",
  "assert_matches",
  "bencher",
@@ -10275,7 +10238,7 @@ dependencies = [
  "agave-snapshots",
  "agave-transaction-view",
  "agave-votor-messages",
- "ahash 0.8.12",
+ "ahash",
  "arc-swap",
  "arrayref",
  "assert_matches",
@@ -10919,7 +10882,7 @@ version = "4.3.0-alpha.3"
 dependencies = [
  "agave-feature-set",
  "agave-precompiles",
- "ahash 0.8.12",
+ "ahash",
  "assert_matches",
  "bincode",
  "env_logger",
@@ -11389,7 +11352,7 @@ dependencies = [
  "futures 0.3.33",
  "futures-util",
  "log",
- "lru 0.18.1",
+ "lru",
  "quinn",
  "rustls",
  "serde_json",
@@ -11565,7 +11528,7 @@ dependencies = [
  "itertools 0.14.0",
  "lazy-lru",
  "log",
- "lru 0.18.1",
+ "lru",
  "rand 0.9.4",
  "rand_chacha 0.9.0",
  "rayon",
@@ -11915,12 +11878,6 @@ version = "4.3.0-alpha.3"
 dependencies = [
  "solana-program-runtime",
 ]
-
-[[package]]
-name = "spin"
-version = "0.9.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
 
 [[package]]
 name = "spki"
@@ -12283,6 +12240,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "55937e1799185b12863d447f42597ed69d9928686b8d88a1df17376a097d8369"
 
 [[package]]
+name = "tape-reed-solomon"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8d60ec175b7c0ef10297410f621b88006ce9e327b18fd85a12982839e6c294b"
+
+[[package]]
+name = "tape-sha256"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ecfcb393a3304db7c48a8ce2f3a51aa9188ce00ae6bb2c9e03dcd0f3fc3d6da9"
+
+[[package]]
 name = "tar"
 version = "0.4.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -12335,7 +12304,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand",
- "getrandom 0.3.4",
+ "getrandom 0.4.3",
  "once_cell",
  "rustix 1.1.4",
  "windows-sys 0.61.0",

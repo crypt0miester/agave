@@ -58,7 +58,7 @@ qualifier_attr = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rayon = { workspace = true }
-reed-solomon-erasure = { workspace = true, features = ["simd-accel"] }
+reed-solomon-erasure = { workspace = true }
 scopeguard = { workspace = true }
 serde = { workspace = true }
 smallvec = { workspace = true }
@@ -115,6 +115,7 @@ solana-vote = { workspace = true }
 solana-vote-program = { workspace = true }
 static_assertions = { workspace = true }
 strum = { workspace = true, features = ["derive"] }
+tape-sha256 = { workspace = true }
 tar = { workspace = true }
 tempfile = { workspace = true }
 thiserror = { workspace = true }
@@ -153,6 +154,10 @@ name = "blockstore"
 
 [[bench]]
 name = "make_shreds_from_entries"
+harness = false
+
+[[bench]]
+name = "merkle_hash_batch"
 harness = false
 
 [lints]
